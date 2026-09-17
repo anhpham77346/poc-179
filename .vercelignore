@@ -1,0 +1,7 @@
+.agent
+.claude
+.gemini
+docs
+BAO_GIA_DU_AN.md
+*.md
+.git
