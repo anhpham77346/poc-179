@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDU ADMISSIONS — Bảng Quản Trị Tuyển Sinh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- 1. MÀN HÌNH ĐĂNG NHẬP QUẢN TRỊ VIÊN -->
+  <div class="admin-login-overlay" id="adminLoginOverlay">
+    <div class="admin-login-box">
+      <div class="login-brand-header">
+        <div class="login-auth-shield">
+          <svg class="svg-icon" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/>
+          </svg>
+        </div>
+        <h2>HỆ THỐNG QUẢN TRỊ TUYỂN SINH</h2>
+        <p>Xác thực phiên làm việc Quản trị viên</p>
+      </div>
+
+      <div class="field-group" style="margin-bottom: 14px;">
+        <label class="field-label">Tài khoản quản trị viên</label>
+        <input type="text" class="field-input" value="admin@edu-admissions.gov.vn" readonly style="background: #f8fafc;">
+      </div>
+
+      <div class="field-group" style="margin-bottom: 24px;">
+        <label class="field-label">Mật khẩu xác thực</label>
+        <input type="password" class="field-input" value="••••••••••••" readonly style="background: #f8fafc;">
+      </div>
+
+      <button type="button" class="btn-action-primary" style="width: 100%; justify-content: center; height: 44px; font-size: 0.95rem;" onclick="loginAdmin()">
+        <span>Đăng nhập vào Hệ thống Quản trị</span>
+      </button>
+
+      <div style="text-align: center; margin-top: 18px;">
+        <a href="index.html" style="font-size: 0.82rem; color: var(--text-tertiary);">← Quay lại Cổng Thí Sinh</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. GIAO DIỆN QUẢN TRỊ CHÍNH -->
+  <div class="admin-layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand-box">
+        <div class="brand-icon-box" style="width: 30px; height: 30px;">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+          </svg>
+        </div>
+        <span>EDU ADMIN</span>
+      </div>
+
+      <ul class="sidebar-nav-menu">
+        <li>
+          <a href="#" class="nav-item-btn active" data-section="overview">
+            <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24">
+              <rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/>
+              <rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
+            </svg>
+            <span>Tổng quan hệ thống</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-item-btn" data-section="schools">
+            <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24">
+              <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/>
+              <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/>
+              <path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/>
+            </svg>
+            <span>Trường & Ngành</span>
+            <span class="nav-badge-pill">CRUD</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-item-btn" data-section="benchmarks">
+            <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+              <polyline points="16 7 22 7 22 13"/>
+            </svg>
+            <span>Quản lý Điểm chuẩn</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-item-btn" data-section="admissions_scholarships">
+            <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/>
+            </svg>
+            <span>Tuyển sinh & Học bổng</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-item-btn" data-section="news_cms">
+            <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24">
+              <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
+            </svg>
+            <span>Quản lý Tin tức</span>
+            <span class="nav-badge-pill">CMS</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-exit-box">
+        <a href="index.html" class="sidebar-exit-link">
+          <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          <span>Xem Cổng Thí Sinh</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="admin-main-wrap">
+      
+      <!-- TOPBAR -->
+      <header class="admin-topbar-glass">
+        <div>
+          <h1 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary);" id="currentPageTitle">
+            Tổng quan hệ thống
+          </h1>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <!-- User Profile Box -->
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="monogram-badge" style="width: 32px; height: 32px; font-size: 0.75rem; background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+              AD
+            </div>
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">Ban Quản Trị</div>
+              <div style="font-size: 0.72rem; color: var(--accent-primary); font-weight: 600;">Quản trị viên hệ thống</div>
+            </div>
+            <button class="btn-mini-svg" onclick="logoutAdmin()" title="Đăng xuất / Khóa phiên" style="margin-left: 6px;">
+              <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT PANELS -->
+      <div class="admin-body-content">
+        
+        <!-- SECTION 1: OVERVIEW -->
+        <section class="admin-view-panel active" id="section_overview">
+          <div class="admin-kpi-bento">
+            <div class="kpi-bento-card">
+              <div>
+                <div class="kpi-metric-label">Cơ sở đào tạo</div>
+                <div class="kpi-metric-num" id="kpiTotalSchools">0</div>
+              </div>
+              <div class="kpi-icon-pill">
+                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/></svg>
+              </div>
+            </div>
+
+            <div class="kpi-bento-card">
+              <div>
+                <div class="kpi-metric-label">Mã ngành tuyển sinh</div>
+                <div class="kpi-metric-num" id="kpiTotalMajors">0</div>
+              </div>
+              <div class="kpi-icon-pill">
+                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+              </div>
+            </div>
+
+            <div class="kpi-bento-card">
+              <div>
+                <div class="kpi-metric-label">Tuyển sinh & Học bổng</div>
+                <div class="kpi-metric-num" id="kpiTotalEventsScholarships">0</div>
+              </div>
+              <div class="kpi-icon-pill">
+                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              </div>
+            </div>
+
+            <div class="kpi-bento-card">
+              <div>
+                <div class="kpi-metric-label">Tin tức & Quy chế</div>
+                <div class="kpi-metric-num" id="kpiTotalArticles">0</div>
+              </div>
+              <div class="kpi-icon-pill">
+                <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Z"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bento Guideline Card -->
+          <div class="bento-table-card" style="margin-bottom: 24px;">
+            <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
+              Quyền hạn Quản trị viên hệ thống:
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">
+              Tài khoản Quản trị viên có toàn quyền truy cập và quản lý toàn bộ các phân hệ:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+              <div style="background: #f8fafc; border: 1px solid var(--border-glass); padding: 14px; border-radius: 8px;">
+                <strong style="font-size: 0.85rem; color: var(--text-primary);">1. Quản lý Cơ sở đào tạo (CRUD)</strong>
+                <div style="font-size: 0.76rem; color: var(--text-tertiary); margin-top: 4px;">
+                  Thêm mới, sửa thông tin, bật/tắt trạng thái ẩn/hiện cơ sở đào tạo.
+                </div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid var(--border-glass); padding: 14px; border-radius: 8px;">
+                <strong style="font-size: 0.85rem; color: var(--text-primary);">2. Cập nhật Điểm chuẩn</strong>
+                <div style="font-size: 0.76rem; color: var(--text-tertiary); margin-top: 4px;">
+                  Chỉnh sửa điểm chuẩn theo năm, phương thức xét tuyển và tiêu chí phụ.
+                </div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid var(--border-glass); padding: 14px; border-radius: 8px;">
+                <strong style="font-size: 0.85rem; color: var(--text-primary);">3. Quản lý Tuyển sinh & Học bổng</strong>
+                <div style="font-size: 0.76rem; color: var(--text-tertiary); margin-top: 4px;">
+                  Cập nhật các mốc lộ trình Bộ GD&ĐT và danh mục quỹ tài trợ học bổng.
+                </div>
+              </div>
+              <div style="background: #f8fafc; border: 1px solid var(--border-glass); padding: 14px; border-radius: 8px;">
+                <strong style="font-size: 0.85rem; color: var(--text-primary);">4. Quản lý Tin tức & Quy chế (CMS)</strong>
+                <div style="font-size: 0.76rem; color: var(--text-tertiary); margin-top: 4px;">
+                  Soạn thảo văn bản thông tư, bài viết hướng nghiệp và xuất bản trực quan.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: CRUD TRƯỜNG & NGÀNH -->
+        <section class="admin-view-panel" id="section_schools">
+          <div class="bento-table-card">
+            <div class="bento-table-toolbar">
+              <div>
+                <input type="text" class="field-input" placeholder="Tìm theo tên hoặc mã..." style="width: 260px;">
+              </div>
+              <div>
+                <button class="table-action-btn primary" onclick="openAddSchoolModal()">
+                  <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  <span>Thêm cơ sở đào tạo</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="bento-table">
+                <thead>
+                  <tr>
+                    <th>Mã</th>
+                    <th>Tên trường & Cơ sở</th>
+                    <th>Khu vực</th>
+                    <th>Quy mô ngành</th>
+                    <th>Học phí</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="schoolsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 3: QUẢN LÝ ĐIỂM CHUẨN -->
+        <section class="admin-view-panel" id="section_benchmarks">
+          <div class="bento-table-card">
+            <div class="bento-table-toolbar">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="field-label" style="margin: 0;">Lọc theo cơ sở:</span>
+                <select id="filterBenchmarkSchool" class="field-select" onchange="renderBenchmarksTable()">
+                  <option value="all">Tất cả các cơ sở</option>
+                  <option value="BKA">BKA - ĐH Bách Khoa Hà Nội</option>
+                  <option value="NTH">NTH - ĐH Ngoại Thương</option>
+                  <option value="KHA">KHA - ĐH Kinh Tế Quốc Dân</option>
+                  <option value="QSB">QSB - ĐH Bách Khoa TP.HCM</option>
+                  <option value="YHB">YHB - ĐH Y Hà Nội</option>
+                </select>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="table-action-btn" onclick="openExcelImportModal()">
+                  <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  <span>Import Excel</span>
+                </button>
+                <button class="table-action-btn primary" onclick="saveAllBenchmarks()">
+                  <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+                  <span>Lưu toàn bộ thay đổi</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="bento-table">
+                <thead>
+                  <tr>
+                    <th>Mã trường</th>
+                    <th>Ngành đào tạo & Khối</th>
+                    <th>Phương thức</th>
+                    <th>Điểm 2023</th>
+                    <th>Điểm 2024</th>
+                    <th>Dự kiến 2025</th>
+                    <th>Tiêu chí phụ</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="benchmarksTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: ADMISSIONS & SCHOLARSHIPS -->
+        <section class="admin-view-panel" id="section_admissions_scholarships">
+          <!-- Timeline Table -->
+          <div class="bento-table-card" style="margin-bottom: 24px;">
+            <div class="bento-table-toolbar">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-primary);">
+                  Mốc Lộ Trình Tuyển Sinh Bộ GD&ĐT
+                </h3>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px;">
+                  Quản lý các mốc thời gian thi tốt nghiệp, đăng ký và lọc ảo nguyện vọng
+                </p>
+              </div>
+              <div>
+                <button class="table-action-btn primary" onclick="openAddTimelineEventModal()">
+                  <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  <span>Thêm mốc sự kiện</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="bento-table">
+                <thead>
+                  <tr>
+                    <th>Mã</th>
+                    <th>Thời gian</th>
+                    <th>Tiêu đề sự kiện & Chi tiết</th>
+                    <th>Đơn vị phụ trách</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="timelineTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Scholarships Table -->
+          <div class="bento-table-card">
+            <div class="bento-table-toolbar">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-primary);">
+                  Danh Mục Quỹ Học Bổng Toàn Phần & Doanh Nghiệp
+                </h3>
+                <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px;">
+                  Quản lý các gói tài trợ học phí, trợ cấp sinh hoạt cho tân sinh viên
+                </p>
+              </div>
+              <div>
+                <button class="table-action-btn primary" onclick="openAddScholarshipModal()">
+                  <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  <span>Thêm gói học bổng</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="bento-table">
+                <thead>
+                  <tr>
+                    <th>Mã</th>
+                    <th>Tên gói học bổng</th>
+                    <th>Nhà tài trợ</th>
+                    <th>Trị giá gói</th>
+                    <th>Hạn nộp</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="scholarshipsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 5: NEWS CMS -->
+        <section class="admin-view-panel" id="section_news_cms">
+          <div class="bento-table-card">
+            <div class="bento-table-toolbar">
+              <div>
+                <input type="text" class="field-input" placeholder="Tìm bài viết..." style="width: 260px;" oninput="searchAdminArticles(this.value)">
+              </div>
+              <div>
+                <button class="table-action-btn primary" onclick="openAddArticleModal()">
+                  <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  <span>Soạn bài viết mới</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+              <table class="bento-table">
+                <thead>
+                  <tr>
+                    <th>Mã</th>
+                    <th>Tiêu đề & Tóm tắt</th>
+                    <th>Chuyên mục</th>
+                    <th>Ngày đăng</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="cmsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: FORM THÊM / SỬA TRƯỜNG -->
+  <div class="modal-overlay" id="schoolFormModal">
+    <div class="modal-box-glass" style="max-width: 560px;">
+      <div class="modal-header-glass">
+        <h3 id="schoolModalTitle" style="font-size: 1.15rem; font-weight: 800;">Thêm Cơ Sở Đào Tạo Mới</h3>
+        <button class="modal-close-btn" onclick="closeAdminModal('schoolFormModal')">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body-glass">
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Mã trường *</label>
+          <input type="text" id="formSchoolCode" class="field-input" placeholder="Ví dụ: BKA, NEU...">
+        </div>
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Tên cơ sở đào tạo *</label>
+          <input type="text" id="formSchoolName" class="field-input" placeholder="Ví dụ: Đại học Bách Khoa Hà Nội">
+        </div>
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Tên viết tắt</label>
+          <input type="text" id="formSchoolShort" class="field-input" placeholder="Ví dụ: HUST">
+        </div>
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Địa điểm cơ sở</label>
+          <input type="text" id="formSchoolCity" class="field-input" value="Hà Nội">
+        </div>
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Học phí trung bình (triệu VNĐ/năm)</label>
+          <input type="number" id="formSchoolTuition" class="field-input" value="28">
+        </div>
+        <div class="field-group" style="margin-bottom: 20px;">
+          <label class="field-label">Giới thiệu tóm tắt</label>
+          <textarea id="formSchoolDesc" class="field-input" rows="3" placeholder="Mô tả thông tin cơ sở..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button class="table-action-btn" onclick="closeAdminModal('schoolFormModal')">Hủy bỏ</button>
+          <button class="table-action-btn primary" onclick="saveSchoolForm()">Lưu thông tin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: THÊM / SỬA MỐC TUYỂN SINH -->
+  <div class="modal-overlay" id="timelineModal">
+    <div class="modal-box-glass" style="max-width: 580px;">
+      <div class="modal-header-glass">
+        <h3 id="timelineModalTitle" style="font-size: 1.15rem; font-weight: 800;">Thêm Mốc Tuyển Sinh</h3>
+        <button class="modal-close-btn" onclick="closeAdminModal('timelineModal')">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body-glass">
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Thời gian (Tháng / Ngày) *</label>
+          <input type="text" id="timelineFormMonth" class="field-input" placeholder="Ví dụ: 18/07 - 30/07/2026">
+        </div>
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Tiêu đề sự kiện *</label>
+          <input type="text" id="timelineFormTitle" class="field-input" placeholder="Ví dụ: Đăng ký nguyện vọng trực tuyến">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div class="field-group">
+            <label class="field-label">Cơ quan phụ trách</label>
+            <input type="text" id="timelineFormAuthority" class="field-input" placeholder="Ví dụ: Bộ Giáo dục và Đào tạo">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Trạng thái</label>
+            <select id="timelineFormStatus" class="field-select">
+              <option value="upcoming">Sắp diễn ra (Upcoming)</option>
+              <option value="active">Đang mở / Đang diễn ra (Active)</option>
+              <option value="done">Đã hoàn thành (Done)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group" style="margin-bottom: 20px;">
+          <label class="field-label">Mô tả nội dung & Quy trình hướng dẫn</label>
+          <textarea id="timelineFormDetails" class="field-input" rows="3" placeholder="Chi tiết các bước thực hiện cho thí sinh..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button class="table-action-btn" onclick="closeAdminModal('timelineModal')">Hủy bỏ</button>
+          <button class="table-action-btn primary" onclick="saveTimelineEvent()">Lưu mốc sự kiện</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: THÊM / SỬA HỌC BỔNG -->
+  <div class="modal-overlay" id="scholarshipModal">
+    <div class="modal-box-glass" style="max-width: 600px;">
+      <div class="modal-header-glass">
+        <h3 id="scholarshipModalTitle" style="font-size: 1.15rem; font-weight: 800;">Thêm Gói Học Bổng</h3>
+        <button class="modal-close-btn" onclick="closeAdminModal('scholarshipModal')">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body-glass">
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Tên gói học bổng *</label>
+          <input type="text" id="schFormTitle" class="field-input" placeholder="Ví dụ: Quỹ Học bổng Tài năng Trẻ TechGenius">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div class="field-group">
+            <label class="field-label">Đơn vị / Tập đoàn tài trợ</label>
+            <input type="text" id="schFormSponsor" class="field-input" placeholder="Tên đơn vị tài trợ...">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Trị giá tài trợ</label>
+            <input type="text" id="schFormAmount" class="field-input" placeholder="Ví dụ: 100% học phí (250 triệu)">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div class="field-group">
+            <label class="field-label">Hạn nộp hồ sơ</label>
+            <input type="text" id="schFormDeadline" class="field-input" placeholder="Ví dụ: 15/05/2026">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Trạng thái mở đơn</label>
+            <select id="schFormStatus" class="field-select">
+              <option value="Đang mở đơn">Đang mở đơn</option>
+              <option value="Chuẩn bị mở">Chuẩn bị mở</option>
+              <option value="Đã đóng đơn">Đã đóng đơn</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group" style="margin-bottom: 20px;">
+          <label class="field-label">Đối tượng & Tiêu chuẩn xét chọn</label>
+          <textarea id="schFormTarget" class="field-input" rows="3" placeholder="Điều kiện điểm số, hoàn cảnh hoặc thành tích..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button class="table-action-btn" onclick="closeAdminModal('scholarshipModal')">Hủy bỏ</button>
+          <button class="table-action-btn primary" onclick="saveScholarship()">Lưu gói học bổng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CMS WYSIWYG EDITOR -->
+  <div class="modal-overlay" id="cmsEditorModal">
+    <div class="modal-box-glass" style="max-width: 800px;">
+      <div class="modal-header-glass">
+        <h3 id="cmsModalTitle" style="font-size: 1.15rem; font-weight: 800;">Soạn Thảo Bài Viết</h3>
+        <button class="modal-close-btn" onclick="closeAdminModal('cmsEditorModal')">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body-glass">
+        <div class="field-group" style="margin-bottom: 12px;">
+          <label class="field-label">Tiêu đề bài viết *</label>
+          <input type="text" id="cmsArticleTitle" class="field-input" placeholder="Tiêu đề quy chế hoặc bài viết hướng nghiệp...">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+          <div class="field-group">
+            <label class="field-label">Chuyên mục</label>
+            <select id="cmsArticleCat" class="field-select">
+              <option value="Thông tư - Quy chế">Thông tư - Quy chế</option>
+              <option value="Dự báo nhân lực">Dự báo nhân lực</option>
+              <option value="Tư vấn hướng nghiệp">Tư vấn hướng nghiệp</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Trạng thái</label>
+            <select id="cmsArticleStatus" class="field-select">
+              <option value="published">Xuất bản ngay</option>
+              <option value="draft">Bản nháp</option>
+              <option value="unpublished">Gỡ xuống</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- WYSIWYG Box -->
+        <div class="wysiwyg-box-bento" style="margin-bottom: 18px;">
+          <div class="wysiwyg-actions-strip">
+            <button type="button" class="editor-btn-tool" data-command="bold"><b>B</b></button>
+            <button type="button" class="editor-btn-tool" data-command="italic"><i>I</i></button>
+            <button type="button" class="editor-btn-tool" data-command="underline"><u>U</u></button>
+            <span style="color: var(--border-glass);">|</span>
+            <button type="button" class="editor-btn-tool" data-command="formatBlock" data-arg="h2">H2</button>
+            <button type="button" class="editor-btn-tool" data-command="formatBlock" data-arg="h3">H3</button>
+            <span style="color: var(--border-glass);">|</span>
+            <button type="button" class="editor-btn-tool" data-command="insertUnorderedList">Danh sách</button>
+            <button type="button" class="editor-btn-tool" data-command="createLink">Liên kết</button>
+          </div>
+          <div class="editor-writable-area" id="cmsEditorBody" contenteditable="true">
+            <p>Nội dung chi tiết bài viết...</p>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button class="table-action-btn" onclick="closeAdminModal('cmsEditorModal')">Hủy bỏ</button>
+          <button class="table-action-btn primary" onclick="saveArticleCMS()">Lưu & Cập nhật</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/mock-data.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

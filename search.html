@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tra Cứu Trường, Ngành & Điểm Chuẩn — EDU ADMISSIONS 2026</title>
+  <meta name="description" content="Tra cứu trường đại học, ngành đào tạo, phương thức xét tuyển và phân tích cơ hội trúng tuyển theo 3 vùng điểm.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- SITE HEADER / NAVBAR -->
+  <header class="site-header" id="mainHeader">
+    <div class="container nav-wrapper">
+      <a href="index.html" class="brand-logo" id="brandLogo">
+        <div class="brand-icon-box">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+            <path d="M6 6h10"/>
+            <path d="M6 10h10"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-text-title">
+            EDU ADMISSIONS <span class="brand-version-tag">2026</span>
+          </div>
+          <div class="brand-sub">Tra Cứu Điểm & Tuyển Sinh</div>
+        </div>
+      </a>
+
+      <nav>
+        <ul class="main-nav">
+          <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+          <li><a href="search.html" class="nav-link active">Tra cứu & Điểm chuẩn</a></li>
+          <li><a href="schedule.html" class="nav-link">Lịch & Học bổng</a></li>
+          <li><a href="news.html" class="nav-link">Tin tức</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Wishlist Button -->
+        <button class="btn-glass" id="wishlistOpenBtn" onclick="openWishlistModal()">
+          <svg class="svg-icon" width="15" height="15" viewBox="0 0 24 24">
+            <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+          </svg>
+          <span>Đã lưu</span>
+          <span class="badge-counter" id="wishlistCountBadge">0</span>
+        </button>
+
+        <!-- Admin Portal CTA -->
+        <a href="admin.html" class="btn-admin-cta" id="navAdminPortalBtn">
+          <span>Trang Quản Trị</span>
+          <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN BODY -->
+  <main class="container" style="padding-top: 24px;">
+    
+    <!-- 1. SEARCH HEADER & QUICK FILTERS (KHÔNG CÓ ĐẾM NGƯỢC) -->
+    <section style="margin-bottom: 24px; position: relative; z-index: 60;">
+      <div class="bento-card col-12 search-hero-card" style="background: #ffffff; overflow: visible !important; position: relative; z-index: 60;">
+        <div style="margin-bottom: 16px;">
+          <span class="filter-heading-text">Bộ công cụ tra cứu thông minh</span>
+          <h1 style="font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 4px; color: var(--text-primary);">
+            Tra Cứu Trường, Ngành & Điểm Chuẩn Tuyển Sinh
+          </h1>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px;">
+            Hỗ trợ tìm kiếm nhanh theo mã trường, tên trường hoặc ngành đào tạo. Kết hợp lọc khu vực địa lý và khoảng điểm chuẩn.
+          </p>
+        </div>
+
+        <!-- Search Bar with Live Autocomplete -->
+        <div class="search-wrapper-bento" style="margin-bottom: 16px;">
+          <div class="search-box-glass">
+            <svg class="svg-icon" width="18" height="18" viewBox="0 0 24 24" style="color: var(--text-tertiary); margin-right: 4px;">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" 
+                   id="smartSearchInput" 
+                   class="search-input-field" 
+                   placeholder="Nhập tên trường, mã trường (BKA, FTU, NEU...) hoặc tên ngành (CNTT, Bán dẫn)..." 
+                   autocomplete="off">
+            <button class="btn-search-action" id="smartSearchBtn">
+              <span>Lọc kết quả</span>
+            </button>
+          </div>
+          <div id="autocompleteDropdown" class="autocomplete-dropdown"></div>
+        </div>
+
+        <!-- Quick Filter Pills -->
+        <div class="filter-pills-bar">
+          <span class="filter-heading-text">Khu vực Miền:</span>
+          <div class="pill-group" id="regionChips"></div>
+
+          <span class="filter-heading-text" style="margin-left: 14px;">Khối ngành đào tạo:</span>
+          <div class="pill-group" id="categoryChips"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SMART RECOMMENDATION & ASPIRATIONS DRAFTER -->
+    <section style="margin-bottom: 44px;" id="recommendationSection">
+      <div class="bento-card" style="background: #ffffff; padding: 26px;">
+        
+        <!-- Header -->
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 22px;">
+          <div>
+            <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; margin-bottom: 6px;">
+              <span class="glow-dot emerald"></span>
+              <span style="color: var(--status-emerald); font-weight: 700; text-transform: uppercase;">Bộ Gợi Ý & Xếp Nguyện Vọng Thông Minh</span>
+            </div>
+            <h2 style="font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary);">
+              Phân Tích Cơ Hội & Xếp Danh Sách Nguyện Vọng 2026
+            </h2>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+              Nhập tổng điểm xét tuyển và tổ hợp môn để hệ thống tính toán độ lệch điểm (+/-), đánh giá xác suất trúng tuyển và cho phép gán trực tiếp vào danh sách Nguyện vọng (NV1, NV2, NV3...).
+            </p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid var(--border-glass); padding: 8px 16px; border-radius: 10px;">
+            <div style="font-size: 0.78rem; color: var(--text-tertiary);">Điểm xét tuyển:</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: var(--accent-primary);" id="displayTotalScore">27.50 đ</div>
+          </div>
+        </div>
+
+        <!-- Calculator Form Bento Strip -->
+        <div class="score-form-bento" style="margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; align-items: flex-end;">
+          <div class="field-group">
+            <label class="field-label" for="scoreGroupSelect">Tổ hợp môn xét</label>
+            <select id="scoreGroupSelect" class="field-select" onchange="calculateAdmissionsRecommendations()">
+              <option value="A00" selected>A00 (Toán, Lý, Hóa)</option>
+              <option value="A01">A01 (Toán, Lý, Anh)</option>
+              <option value="B00">B00 (Toán, Hóa, Sinh)</option>
+              <option value="C00">C00 (Văn, Sử, Địa)</option>
+              <option value="D01">D01 (Toán, Văn, Anh)</option>
+              <option value="all">Tất cả tổ hợp</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="userScoreInput">Tổng điểm xét tuyển (0 - 30)</label>
+            <input type="number" 
+                   id="userScoreInput" 
+                   class="field-input" 
+                   min="0" 
+                   max="30" 
+                   step="0.05" 
+                   value="27.50" 
+                   placeholder="Nhập tổng điểm..." 
+                   oninput="calculateAdmissionsRecommendations()">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="recFilterRegion">Khu vực địa lý</label>
+            <select id="recFilterRegion" class="field-select" onchange="calculateAdmissionsRecommendations()">
+              <option value="all" selected>Toàn quốc</option>
+              <option value="north">Miền Bắc</option>
+              <option value="central">Miền Trung</option>
+              <option value="south">Miền Nam</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="recFilterChance">Mức độ cơ hội</label>
+            <select id="recFilterChance" class="field-select" onchange="calculateAdmissionsRecommendations()">
+              <option value="all" selected>Tất cả cơ hội</option>
+              <option value="safe">Khả năng đỗ cao (Dư điểm)</option>
+              <option value="reach">Cạnh tranh sát sao (±0.5đ)</option>
+              <option value="risk">Thử thách / Ước mơ</option>
+            </select>
+          </div>
+
+          <div>
+            <button class="btn-search-action" id="btnCalculateRecommendations" style="width: 100%; height: 42px; padding: 0 16px;" onclick="calculateAdmissionsRecommendations()">
+              <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <span>Phân tích cơ hội</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2-Column Grid: Matrix Table on Left, Aspirations Drafter on Right -->
+        <div class="rec-grid-wrapper">
+          
+          <!-- LEFT: Recommendations Table -->
+          <div class="rec-table-pane">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-glass);">
+              <div>
+                <span id="recResultsSummary" style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">
+                  Danh Sách Ngành Phù Hợp Điểm Thi
+                </span>
+                <span id="recResultsCount" style="font-size: 0.8rem; color: var(--text-tertiary); margin-left: 6px;"></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <label for="recSortBy" style="font-size: 0.78rem; color: var(--text-tertiary); font-weight: 600;">Sắp xếp theo:</label>
+                <select id="recSortBy" class="field-select" style="padding: 6px 10px; font-size: 0.8rem; width: auto;" onchange="calculateAdmissionsRecommendations()">
+                  <option value="diff_desc" selected>Độ an toàn cao nhất (+ điểm)</option>
+                  <option value="diff_asc">Thử thách nhất (điểm cao)</option>
+                  <option value="benchmark_desc">Điểm chuẩn 2024 cao → thấp</option>
+                  <option value="school">Theo tên trường (A - Z)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table Container -->
+            <div style="overflow-x: auto; max-height: 520px; overflow-y: auto; border: 1px solid var(--border-glass); border-radius: 10px;">
+              <table class="bento-table rec-matrix-table" style="margin: 0; min-width: 680px;">
+                <thead style="position: sticky; top: 0; background: #f8fafc; z-index: 2; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                  <tr>
+                    <th>Trường & Khu vực</th>
+                    <th>Ngành xét tuyển & Tổ hợp</th>
+                    <th style="text-align: center;">Điểm chuẩn 2024</th>
+                    <th style="text-align: center;">Độ lệch điểm</th>
+                    <th style="text-align: center;">Đánh giá cơ hội</th>
+                    <th style="text-align: right; min-width: 130px;">Hành động</th>
+                  </tr>
+                </thead>
+                <tbody id="recommendationTableBody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- RIGHT: Aspirations Drafter (Phiếu Nguyện Vọng Dự Kiến) -->
+          <div class="aspirations-draft-pane">
+            <div class="aspiration-card-header">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="uni-code-tag" style="background: var(--accent-primary-light); color: var(--accent-primary);">Chiến Lược</span>
+                  <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--text-primary);">Phiếu Nguyện Vọng</h3>
+                </div>
+                <span class="zone-badge-pill safe" id="aspirationsCountBadge">0 / 10 NV</span>
+              </div>
+              <p style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 6px; line-height: 1.4;">
+                Xếp các nguyện vọng yêu thích và an toàn theo thứ tự ưu tiên (NV1 được xét tuyển đầu tiên theo quy định Bộ GD&ĐT).
+              </p>
+            </div>
+
+            <!-- Aspirations List Container -->
+            <div id="aspirationsListContainer" class="aspirations-list-container">
+              <!-- Dynamically populated or empty state -->
+            </div>
+
+            <!-- Drafter Footer Actions -->
+            <div class="aspiration-footer-actions">
+              <button class="btn-search-action" style="flex: 1; padding: 8px 12px; font-size: 0.82rem;" onclick="saveAspirationsToWishlist()">
+                <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span>Lưu vào Hồ sơ</span>
+              </button>
+              <button class="btn-mini-svg" style="color: var(--status-crimson); padding: 8px 12px; border: 1px solid var(--border-glass); border-radius: 8px;" title="Xóa danh sách" onclick="clearAspirationsList()">
+                <svg class="svg-icon" width="14" height="14" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                <span style="font-size: 0.78rem; font-weight: 600;">Xóa hết</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. UNIVERSITY DIRECTORY -->
+    <section style="margin-bottom: 40px;" id="schoolsSection">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 18px;">
+        <div>
+          <span class="filter-heading-text">Danh mục cơ sở đào tạo</span>
+          <h2 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 2px; color: var(--text-primary);">
+            Hồ Sơ Các Trường Đại Học
+          </h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="search-box-glass" style="padding: 4px 12px; width: 320px; background: #ffffff;">
+            <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24" style="color: var(--text-tertiary);">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" id="dirSearchInput" class="search-input-field" placeholder="Tìm trường theo tên, mã (BKA, FTU...)..." style="font-size: 0.85rem;" oninput="onDirectorySearch(this.value)">
+          </div>
+          <span class="uni-code-tag" id="uniCountBadge" style="font-size: 0.8rem; padding: 6px 12px; background: #f1f5f9; color: var(--text-secondary);">6 trường</span>
+        </div>
+      </div>
+
+      <div class="university-bento-grid" id="universitiesGrid"></div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM COMPARISON DOCK -->
+  <aside class="comparison-dock" id="comparisonDock">
+    <span style="font-size: 0.85rem; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 8px;">
+      <svg class="svg-icon" width="16" height="16" viewBox="0 0 24 24">
+        <path d="m16 3 5 5-5 5"/><path d="M4 20v-7a4 4 0 0 1 4-4h13"/><path d="m8 21-5-5 5-5"/><path d="M20 4v7a4 4 0 0 1-4 4H3"/>
+      </svg>
+      Bảng đối chiếu <span id="dockCount">(0/4)</span>:
+    </span>
+    <div style="display: flex; gap: 6px;" id="dockSlots"></div>
+    <button class="btn-search-action" style="padding: 6px 14px; font-size: 0.82rem;" onclick="openComparisonModal()">
+      <span>Xem bảng đối chiếu</span>
+    </button>
+  </aside>
+
+  <!-- MODAL 1: CHI TIẾT PROFILE & ĐIỂM CHUẨN 3 NĂM -->
+  <div class="modal-overlay" id="schoolDetailModal">
+    <div class="modal-box-glass">
+      <div class="modal-header-glass">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="monogram-badge" id="detailSchoolLogo">BK</div>
+          <div>
+            <h3 id="detailSchoolTitle" style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary);">Đại học Bách Khoa Hà Nội</h3>
+            <div id="detailSchoolLocation" style="font-size: 0.8rem; color: var(--text-tertiary);">Cơ sở chính: Hà Nội</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('schoolDetailModal')">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body-glass">
+        <div style="background: #f8fafc; border: 1px solid var(--border-glass); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+          <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 6px;">Đề án tuyển sinh & Giới thiệu:</div>
+          <p id="detailSchoolDesc" style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;"></p>
+          <div style="font-size: 0.82rem; color: var(--accent-primary); background: var(--accent-primary-light); border: 1px solid rgba(37, 99, 235, 0.2); padding: 8px 12px; border-radius: 6px;">
+            <strong>Chỉ tiêu & Phương thức:</strong> <span id="detailSchoolPlan"></span>
+          </div>
+          <div style="margin-top: 10px; font-size: 0.82rem; color: var(--text-primary);">
+            Mức học phí: <span id="detailSchoolTuition" style="color: var(--status-amber); font-weight: 700;"></span>
+          </div>
+        </div>
+
+        <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">
+          Bảng Điểm Chuẩn Chi Tiết (2022 - 2025)
+        </h4>
+        <div style="overflow-x: auto;">
+          <table class="bento-table">
+            <thead>
+              <tr>
+                <th>Mã ngành</th>
+                <th>Tên ngành & Tổ hợp</th>
+                <th>Phương thức</th>
+                <th>2022</th>
+                <th>2023</th>
+                <th>2024</th>
+                <th>Dự kiến 2025</th>
+                <th>Tiêu chí phụ</th>
+              </tr>
+            </thead>
+            <tbody id="detailBenchmarksTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: BẢNG SO SÁNH SONG SONG -->
+  <div class="modal-overlay" id="comparisonModal">
+    <div class="modal-box-glass" style="max-width: 1040px;">
+      <div class="modal-header-glass">
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary);">
+          Bảng Đối Chiếu Chỉ Số Song Song
+        </h3>
+        <button class="modal-close-btn" onclick="closeModal('comparisonModal')">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body-glass">
+        <div style="overflow-x: auto;" id="comparisonTableContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: TỦ HỒ SƠ CÁ NHÂN -->
+  <div class="modal-overlay" id="wishlistModal">
+    <div class="modal-box-glass" style="max-width: 580px;">
+      <div class="modal-header-glass">
+        <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--text-primary);">
+          Tủ Hồ Sơ Cá Nhân Tạm Thời
+        </h3>
+        <button class="modal-close-btn" onclick="closeModal('wishlistModal')">
+          <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body-glass">
+        <p style="font-size: 0.82rem; color: var(--text-tertiary); margin-bottom: 14px;">
+          Dữ liệu được lưu trữ an toàn trên LocalStorage của trình duyệt này.
+        </p>
+        <div id="wishlistModalItems"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--border-glass);">
+        <div>
+          <div style="font-weight: 800; color: var(--text-primary); font-size: 1rem;">EDU ADMISSIONS 2026</div>
+          <p style="font-size: 0.78rem; color: var(--text-tertiary);">Hệ thống tra cứu điểm chuẩn và đề án tuyển sinh toàn quốc.</p>
+        </div>
+        <div style="display: flex; gap: 20px; font-size: 0.82rem;">
+          <a href="index.html" style="color: var(--text-secondary);">Trang chủ</a>
+          <a href="schedule.html" style="color: var(--text-secondary);">Lịch & Học bổng</a>
+          <a href="news.html" style="color: var(--text-secondary);">Tin tức</a>
+          <a href="admin.html" style="color: var(--accent-primary); font-weight: 600;">Trang Quản Trị (Admin) →</a>
+        </div>
+      </div>
+      <div style="text-align: center; font-size: 0.74rem; color: var(--text-tertiary); margin-top: 16px;">
+        © 2026 Edu Admissions Platform. Dữ liệu phục vụ kiểm thử và demo giao diện.
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/mock-data.js"></script>
+  <script src="assets/js/guest.js"></script>
+</body>
+</html>
